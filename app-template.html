@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aesthetic Weather Card</title>
+    <link href="style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="weather-card text-center">
+      <!-- Location & Date -->
+      <div class="mb-4">
+        <h2 class="h4 fw-semibold mb-1 letter-spacing" , id="location">
+          Galway
+        </h2>
+ 
+      <!-- <p class="text-white-50 small mb-0" , id="date-time">Sunny • Saturday, 10:11 AM</p>-->
+ 
+<p class="text-white-50 small mb-0" id = "current-datetime"> date</p>
+
+         <!--    <p class="text-white-50 small mb-0", id = "current-date"> date</p>-->
+         <!--    <p class="text-white-50 small mb-0", id = "current-time"> time </p>-->
+
+      </div>
+
+      <!-- Main Weather Icon & Current Temp -->
+      <div class="my-4 py-2">
+        <i
+          class="bi bi-sun-fill text-warning display-2 temp-glow d-block mb-3"
+        ></i>
+        <div
+          class="temp-main position-relative d-inline-block fw-light"
+          ,
+          id="temp"
+        >
+          24<span
+            class="position-absolute top-0 start-100 translate-middle-y fs-2 fw-normal"
+            >°</span
+          >
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="divider my-4"></div>
+
+      <!-- Min / Max Temperature Row -->
+      <div class="row g-3">
+        <!-- Max Temp -->
+        <div class="col-6">
+          <div
+            class="stat-box d-flex align-items-center justify-content-center gap-2"
+          >
+            <i class="bi bi-thermometer-low text-info fs-4"></i>
+
+            <div class="text-start">
+              <span
+                class="d-block text-white-50 custom-small style"
+                style="font-size: 0.75rem; text-transform: uppercase"
+                >Low</span
+              >
+              <span class="fw-semibold fs-5" , id="min-temp">16°C</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Min Temp -->
+        <div class="col-6">
+          <div
+            class="stat-box d-flex align-items-center justify-content-center gap-2"
+          >
+            <i class="bi bi-thermometer-high text-danger fs-4"></i>
+            <div class="text-start">
+              <span
+                class="d-block text-white-50 text-uppercase"
+                style="font-size: 0.75rem"
+                >High</span
+              >
+              <span class="fw-semibold fs-5" , id="max-temp">27°C</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5.3 Bundle JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+function startClock() {
+  const dateTimeElement = document.getElementById("current-datetime");
+ // const clockElement = document.getElementById("current-time");
+ // const dateElement = document.getElementById("current-date");
+
+  // Safety check: Exit quietly if any HTML elements are missing
+ // if (!clockElement || !dateElement || !dateTimeElement) return;
+
+  // Create a reusable function for the clock update logic
+  function updateClock() {
+    const now = new Date();
+    
+    // Format Date
+    const dateOptions = {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    };
+    const cdate = now.toLocaleDateString("en-IE", dateOptions);
+   // dateElement.innerText = cdate;
+
+    // Format Time
+    const timeOptions = {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    };
+    const ctime = now.toLocaleTimeString("en-IE", timeOptions);
+    // clockElement.innerText = ctime;
+    
+    // Update Combined Field
+    dateTimeElement.innerText = `${cdate}, ${ctime}`;
+  }
+
+  // 1. Run it immediately so the page doesn't look blank on load
+  updateClock();
+
+  // 2. Keep it ticking every 1 second after that
+  setInterval(updateClock, 1000); 
+}
+
+      async function loadData() {
+        try {
+          const response = await fetch("data.txt"); // 1. Wait for file to download
+          const data = await response.json(); // 2. Wait for text to turn into an object
+
+          const now = new Date();
+
+          const dateOptions = {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          };
+          const formattedDate = now.toLocaleDateString("en-IE", dateOptions);
+          const timeOptions = {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          };
+          const formattedTime = now.toLocaleTimeString("en-IE", timeOptions);
+
+          console.log(formattedDate);
+          console.log(formattedTime);
+          // 3. Update your HTML using the 'data' variable directly
+          document.getElementById("temp").innerText = data.temp;
+          document.getElementById("min-temp").innerText = data.min;
+          document.getElementById("max-temp").innerText = data.max;
+          document.getElementById("location").innerText = data.location;
+
+     //     document.getElementById("date-time").innerText =
+     //       `${formattedDate}, ${formattedTime}`;
+        } catch (error) {
+          console.error("Error loading the file:", error);
+        }
+      }
+
+      // Call the function to run everything in order
+      loadData();
+      startClock();
+    </script>
+  </body>
+</html>
