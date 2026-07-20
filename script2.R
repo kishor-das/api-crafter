@@ -2,6 +2,7 @@ library(httr2)
 library(xml2)
 library(dplyr)
 library(jsonlite)
+library(tidyverse)
 
 base_url <- "http://openaccess.pf.api.met.ie/metno-wdb2ts/locationforecast"
 lat_coord <- "53.2707"
@@ -46,9 +47,12 @@ clean_forecast <- forecast_df |>
     Time_To = as.POSIXct(Time_To, format = "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
   ) |>
   # Keep only unique time steps for a clean 10-day sequence
-  distinct(Time_From, .keep_all = TRUE)
+  distinct(Time_From, .keep_all = TRUE) |>
+  mutate(date = lubridate::date(Time_From))
 
-summary(clean_forecast)
+
+today_date <- Sys.Date()
+
 
 
 temp_list <- list(temp = 21, min = 14, max = 24, location = "Galway City")

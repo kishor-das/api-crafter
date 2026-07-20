@@ -1,6 +1,6 @@
 {
-  "temp": [21],
-  "min": [14],
-  "max": [24],
+  "temp": [22],
+  "min": [15.9],
+  "max": [22.7],
   "location": ["Galway City"]
 }
