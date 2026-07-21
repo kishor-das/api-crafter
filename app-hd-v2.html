@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human Design Transit Dashboard</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+       <!-- Bootstrap Icons CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+ 
+<!--    <style>
+        :root {
+            --bg-cosmic: #0a0915;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --sun-glow: radial-gradient(circle at top right, rgba(245, 158, 11, 0.15), transparent 60%);
+            --moon-glow: radial-gradient(circle at top right, rgba(147, 197, 253, 0.15), transparent 60%);
+            --sun-accent: #f59e0b;
+            --moon-accent: #60a5fa;
+        }
+
+        body {
+            background-color: var(--bg-cosmic);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(88, 28, 135, 0.2), transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(30, 58, 138, 0.2), transparent 40%);
+        }
+
+        /* Glassmorphism Transit Card overrides on top of Bootstrap card utilities */
+        .transit-card {
+            background: var(--card-bg) !important;
+            border: 1px solid var(--card-border) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+        }
+
+        .transit-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 255, 255, 0.15) !important;
+        }
+
+        /* Celestial Glow Overlays */
+        .transit-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .card-sun::before { background: var(--sun-glow); }
+        .card-moon::before { background: var(--moon-glow); }
+
+        /* Ensure card contents stay above the background gradients */
+        .card-body {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Color accents mapping to Bootstrap elements */
+        .text-sun { color: var(--sun-accent); }
+        .text-moon { color: var(--moon-accent); }
+        .text-muted-custom { color: var(--text-secondary); }
+
+        /* Coordinate text styling */
+        .coordinate-badge {
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+        .coordinate-badge span {
+            font-size: 0.7em;
+            opacity: 0.5;
+        }
+
+        /* Line profile decorative side border */
+        .line-focus {
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 2px solid transparent;
+        }
+        .card-sun .line-focus { border-left-color: var(--sun-accent); }
+        .card-moon .line-focus { border-left-color: var(--moon-accent); }
+    </style>
+    -->
+</head>
+<body>
+
+    <main class="container min-vh-100 d-flex align-items-center justify-content-center py-5">
+        <!-- Bootstrap Responsive Grid Row -->
+        <div class="row w-100 justify-content-center g-4" style="max-width: 1000px;">
+            
+            <!-- SUN TRANSIT CARD COL -->
+            <div class="col-12 col-md-6">
+                <article class="card transit-card card-sun h-100 rounded-5">
+                    <div class="card-body p-4 p-lg-5 d-flex flex-column justify-content-between">
+                        
+                        <div>
+                            <!-- Header Info -->
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-sun-fill text-sun fs-4"></i>
+                                    <span class="text-sun fw-bold text-uppercase tracking-wider small" style="letter-spacing: 0.15em;">Sun Transit</span>
+                                </div>
+                                <div class="coordinate-badge h1 m-0">61<span>.</span>1</div>
+                            </div>
+
+
+                            <!-- Gate Info -->
+                            <section class="mb-4">
+                                <h2 class="text-muted-custom text-uppercase fs-6 tracking-wide mb-1" style="font-size: 0.75rem !important;">Gate Archetype</h2>
+                                <h3 class="h4 fw-normal text-white mb-2">The Gate of Inner Truth</h3>
+                                <p class="text-muted-custom fw-light lh-base m-0">
+                                    Fueling the pressure to know, inspire, and sudden mental clarity. This energy brings a profound global focus on universal truths and internal realization.
+                                </p>
+                            </section>
+                        </div>
+
+                        <div>
+                            <hr class="border-secondary opacity-25 my-4">
+
+                            <!-- Line Info -->
+                            <section class="line-focus p-3 rounded-end-3">
+                                <h2 class="text-muted-custom text-uppercase fs-6 tracking-wide mb-1" style="font-size: 0.75rem !important;">Line Profile</h2>
+                                <h3 class="h5 fw-normal text-white mb-1">Line 1: Occult Knowledge</h3>
+                                <p class="text-muted-custom fw-light lh-base small m-0">
+                                    A foundational desire to investigate the core truths of existence. Today prioritizes solid facts over superficial assumptions.
+                                </p>
+                            </section>
+                        </div>
+
+                    </div>
+                </article>
+            </div>
+
+            <!-- MOON TRANSIT CARD COL -->
+            <div class="col-12 col-md-6">
+                <article class="card transit-card card-moon h-100 rounded-5">
+                    <div class="card-body p-4 p-lg-5 d-flex flex-column justify-content-between">
+                        
+                        <div>
+                            <!-- Header Info -->
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="bi bi-moon-stars-fill text-moon fs-4"></i>
+                                    <span class="text-moon fw-bold text-uppercase tracking-wider small" style="letter-spacing: 0.15em;">Moon Transit</span>
+                                </div>
+                                <div class="coordinate-badge h1 m-0">42<span>.</span>3</div>
+                            </div>
+
+                            <!-- Gate Info -->
+                            <section class="mb-4">
+                                <h2 class="text-muted-custom text-uppercase fs-6 tracking-wide mb-1" style="font-size: 0.75rem !important;">Gate Archetype</h2>
+                                <h3 class="h4 fw-normal text-white mb-2">The Gate of Growth</h3>
+                                <p class="text-muted-custom fw-light lh-base m-0">
+                                    The emotional and environmental drive to bring tasks, cycles, and projects to a natural, successful completion.
+                                </p>
+                            </section>
+                        </div>
+
+                        <div>
+                            <hr class="border-secondary opacity-25 my-4">
+
+                            <!-- Line Info -->
+                            <section class="line-focus p-3 rounded-end-3">
+                                <h2 class="text-muted-custom text-uppercase fs-6 tracking-wide mb-1" style="font-size: 0.75rem !important;">Line Profile</h2>
+                                <h3 class="h5 fw-normal text-white mb-1">Line 3: Trial & Error</h3>
+                                <p class="text-muted-custom fw-light lh-base small m-0">
+                                    Discovering what works by experiencing what doesn't. Shifts in mood point toward letting go of attachments to imperfect outcomes.
+                                </p>
+                            </section>
+                        </div>
+
+                    </div>
+                </article>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bootstrap 5 Bundle JS CDN -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+</body>
+</html>

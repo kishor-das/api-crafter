@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planetary Transit Card</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --grid-line: #f1f5f9;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Card Wrapper */
+        .transit-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            max-width: 850px;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        /* Card Header */
+        .card-header {
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+        }
+
+        .card-subtitle {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        /* Legend Layout */
+        .legend-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .legend-color {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            width: 100%;
+        }
+
+        svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Hover effect to highlight paths */
+        .planet-path {
+            transition: stroke-width 0.2s ease, opacity 0.2s ease;
+            cursor: pointer;
+        }
+
+        .planet-path:hover {
+            stroke-width: 3.5px !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="transit-card">
+        <!-- Header -->
+        <div class="card-header">
+            <h2 class="card-title">Planetary Transits & Retrogrades</h2>
+            <p class="card-subtitle">6-Month Ephemeris Timeline Projection</p>
+        </div>
+
+        <!-- Legend Map -->
+        <div class="legend-container">
+            <div class="legend-item"><span class="legend-color" style="background: #ef4444;"></span>Mercury</div>
+            <div class="legend-item"><span class="legend-color" style="background: #f59e0b;"></span>Venus</div>
+            <div class="legend-item"><span class="legend-color" style="background: #b45309;"></span>Mars</div>
+            <div class="legend-item"><span class="legend-color" style="background: #6366f1;"></span>Jupiter</div>
+            <div class="legend-item"><span class="legend-color" style="background: #0d9488;"></span>Saturn</div>
+            <div class="legend-item"><span class="legend-color" style="background: #ea580c;"></span>Uranus</div>
+            <div class="legend-item"><span class="legend-color" style="background: #16a34a;"></span>Neptune</div>
+            <div class="legend-item"><span class="legend-color" style="background: #ec4899;"></span>Pluto</div>
+        </div>
+
+        <!-- Chart Grid and Trajectories -->
+        <div class="chart-container">
+            <svg viewBox="0 0 800 420" fill="none" xmlns="http://w3.org">
+                <!-- X-Axis Grid Time Dividers (6 Months) -->
+                <line x1="30" y1="20" x2="30" y2="370" stroke="#f1f5f9" stroke-width="1.5"/>
+                <line x1="178" y1="20" x2="178" y2="370" stroke="#f1f5f9" stroke-width="1.5"/>
+                <line x1="326" y1="20" x2="326" y2="370" stroke="#f1f5f9" stroke-width="1.5"/>
+                <line x1="474" y1="20" x2="474" y2="370" stroke="#f1f5f9" stroke-width="1.5"/>
+                <line x1="622" y1="20" x2="622" y2="370" stroke="#f1f5f9" stroke-width="1.5"/>
+                <line x1="770" y1="20" x2="770" y2="370" stroke="#f1f5f9" stroke-width="1.5"/>
+
+                <!-- Baseline X-Axis -->
+                <line x1="30" y1="370" x2="770" y2="370" stroke="#cbd5e1" stroke-width="1.5"/>
+
+                <!-- Planetary Trajectory Paths -->
+                <!-- Mercury (Fast loops) -->
+                <path class="planet-path" d="M 30 50 C 150 20, 120 100, 200 50 C 300 10, 260 90, 380 50 C 500 30, 470 110, 580 50 C 680 10, 650 90, 770 50" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+                
+                <!-- Venus (Sweeping, long retrograde loop) -->
+                <path class="planet-path" d="M 30 90 C 200 40, 400 150, 350 50 C 300 -10, 500 130, 770 90" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+                
+                <!-- Mars (Sharp mid-transit retrograde loop) -->
+                <path class="planet-path" d="M 30 130 L 250 115 C 350 70, 300 190, 400 130 L 770 140" stroke="#b45309" stroke-width="2" stroke-linecap="round"/>
+                
+                <!-- Jupiter (Shallow broad loop) -->
+                <path class="planet-path" d="M 30 170 L 450 160 C 520 140, 490 200, 560 170 L 770 165" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/>
+                
+                <!-- Saturn (Slow drift curve) -->
+                <path class="planet-path" d="M 30 210 Q 200 199, 400 210 T 770 216" stroke="#0d9488" stroke-width="2" stroke-linecap="round"/>
+                
+                <!-- Uranus (Flattened outer drift) -->
+                <path class="planet-path" d="M 30 250 Q 200 240, 400 250 T 770 255" stroke="#ea580c" stroke-width="2" stroke-linecap="round"/>
+                
+                <!-- Neptune (Consistent outer transit) -->
+                <path class="planet-path" d="M 30 290 Q 200 281, 400 290 T 770 294" stroke="#16a34a" stroke-width="2" stroke-linecap="round"/>
+                
+                <!-- Pluto (Linear background transit) -->
+                <path class="planet-path" d="M 30 330 Q 200 322, 400 330 T 770 333" stroke="#ec4899" stroke-width="2" stroke-linecap="round"/>
+
+                <!-- X-Axis Labels (Day/Month Information) -->
+                <text x="30" y="395" fill="#64748b" font-size="12" font-weight="500" text-anchor="middle">01 Jan</text>
+                <text x="178" y="395" fill="#64748b" font-size="12" font-weight="500" text-anchor="middle">01 Feb</text>
+                <text x="326" y="395" fill="#64748b" font-size="12" font-weight="500" text-anchor="middle">01 Mar</text>
+                <text x="474" y="395" fill="#64748b" font-size="12" font-weight="500" text-anchor="middle">01 Apr</text>
+                <text x="622" y="395" fill="#64748b" font-size="12" font-weight="500" text-anchor="middle">01 May</text>
+                <text x="770" y="395" fill="#64748b" font-size="12" font-weight="500" text-anchor="middle">01 Jun</text>
+            </svg>
+        </div>
+    </div>
+
+</body>
+</html>

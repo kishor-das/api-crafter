@@ -53,9 +53,14 @@ clean_forecast <- forecast_df |>
 
 today_date <- Sys.Date()
 
+today_temp <- clean_forecast |>
+  filter(date == today_date)|>
+  pull(Temp_C)
 
 
-temp_list <- list(temp = 21, min = 14, max = 24, location = "Galway City")
+
+
+temp_list <- list(temp = today_temp[1], min = min(today_temp), max = max(today_temp), location = "Galway City")
 
 temp_json <- toJSON(temp_list, simplifyVector = TRUE, pretty = TRUE)
 
