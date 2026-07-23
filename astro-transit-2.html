@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Planetary Retrograde Diagram</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <canvas id="diagramCanvas" width="600" height="600"></canvas>
+</div>
+
+<script>
+// 1. DATA INPUTS (Modify these variables to automatically update the diagram)
+const diagramData = {
+    title: "2025-2026 Stations of Uranus",
+    subtitle: "in Taurus and Gemini",
+    footer: "This diagram created dynamically via HTML5 Canvas",
+    textColor: "#000000",
+    themeColor: "#e68a00", // Orange color for the path/text
+    
+    // Vertical degree markers (X coordinates will be calculated evenly)
+    stations: [
+        { degree: "27°", sign: "♉", isBold: true },
+        { degree: "28°", sign: "♉", isBold: false },
+        { degree: "29°", sign: "♉", isBold: false },
+        { degree: "0°",  sign: "♊", isBold: false },
+        { degree: "1°",  sign: "♊", isBold: true }
+    ],
+    
+    // Labels along the path
+    annotations: [
+        { text: "Uranus enters the span in August of 2024", xPct: 0.1, yPct: 0.25, align: "left" },
+        { text: "9/5/2025\n(this is the day when\nUranus turns\nfrom direct to\nretrograde)", xPct: 0.82, yPct: 0.45, align: "left", isRx: true },
+        { text: "2/3/2026\n(this is the day when\nUranus turns\nfrom retrograde to\ndirect)", xPct: 0.18, yPct: 0.70, align: "right", isD: true },
+        { text: "Uranus exits the span in March of 2027", xPct: 0.55, yPct: 0.85, align: "center" }
+    ]
+};
+
+// 2. RENDERING ENGINE
+const canvas = document.getElementById('diagramCanvas');
+const ctx = canvas.getContext('2d');
+
+function drawDiagram(data) {
+    const w = canvas.width;
+    const h = canvas.height;
+    
+    // Clear canvas
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, w, h);
+    
+    // --- DRAW HEADERS ---
+    ctx.fillStyle = data.textColor;
+    ctx.textAlign = "center";
+    ctx.font = "bold 22px Arial";
+    ctx.fillText(data.title, w / 2, 50);
+    ctx.font = "bold 18px Arial";
+    ctx.fillText(data.subtitle, w / 2, 75);
+    
+    // --- DRAW FOOTER ---
+    ctx.font = "italic 12px Arial";
+    ctx.fillText(data.footer, w / 2, h - 20);
+    
+    // --- CALCULATE GRID COLUMNS ---
+    const startX = 130;
+    const endX = w - 130;
+    const colSpacing = (endX - startX) / (data.stations.length - 1);
+    const gridYStart = 140;
+    const gridYEnd = h - 100;
+    
+    // Map station indices to precise pixel values for drawing the line
+    const xCoords = data.stations.map((_, i) => startX + (i * colSpacing));
+    
+    // Draw vertical lines and grid headers
+    data.stations.forEach((station, i) => {
+        const x = xCoords[i];
+        
+        // Text headers
+        ctx.fillStyle = data.textColor;
+        ctx.font = "bold 16px Arial";
+        ctx.fillText(station.degree, x, 105);
+        ctx.font = "20px Arial";
+        ctx.fillText(station.sign, x, 125);
+        
+        // Vertical lines
+        ctx.beginPath();
+        ctx.moveTo(x, gridYStart);
+        ctx.lineTo(x, gridYEnd);
+        ctx.strokeStyle = station.isBold ? "#000000" : "#d3d3d3";
+        ctx.lineWidth = station.isBold ? 3 : 1.5;
+        ctx.stroke();
+    });
+    
+    // --- DRAW THE S-CURVE PATH ---
+    const topY = h * 0.32;
+    const midY = h * 0.50;
+    const botY = h * 0.68;
+    const radius = 35; 
+    
+    ctx.beginPath();
+    ctx.strokeStyle = data.themeColor;
+    ctx.lineWidth = 4;
+    ctx.lineCap = "round";
+    
+    // Start top-left
+    ctx.moveTo(50, topY);
+    // Line to top-right turnaround
+    ctx.lineTo(xCoords[4] - radius, topY);
+    // Top-right curve down to middle layer
+    ctx.arcTo(xCoords[4], topY, xCoords[4], topY + radius, radius);
+    ctx.lineTo(xCoords[4], midY - radius);
+    ctx.arcTo(xCoords[4], midY, xCoords[4] - radius, midY, radius);
+    // Line to middle-left turnaround
+    ctx.lineTo(xCoords[0] + radius, midY);
+    // Middle-left curve down to bottom layer
+    ctx.arcTo(xCoords[0], midY, xCoords[0], midY + radius, radius);
+    ctx.lineTo(xCoords[0], botY - radius);
+    ctx.arcTo(xCoords[0], botY, xCoords[0] + radius, botY, radius);
+    // Line out to bottom-right arrow
+    ctx.lineTo(w - 60, botY);
+    ctx.stroke();
+    
+    // Draw Arrowhead at the end
+    ctx.beginPath();
+    ctx.fillStyle = data.themeColor;
+    ctx.moveTo(w - 60, botY - 8);
+    ctx.lineTo(w - 45, botY);
+    ctx.lineTo(w - 60, botY + 8);
+    ctx.fill();
+    
+    // --- DRAW ASTROLOGICAL GLYPH (Uranus ♅) ---
+    ctx.fillStyle = data.themeColor;
+    ctx.font = "bold 24px Arial";
+    ctx.textAlign = "left";
+    ctx.fillText("♅", 60, topY - 10);
+    
+    // --- DRAW ANNOTATIONS & TEXT BLOCKS ---
+    data.annotations.forEach(ann => {
+        ctx.fillStyle = data.themeColor;
+        ctx.font = "bold 13px Arial";
+        ctx.textAlign = ann.align;
+        
+        const lines = ann.text.split('\n');
+        lines.forEach((line, index) => {
+            // Check if bold is needed for specific lines (like dates)
+            if(index === 0 && (ann.isRx || ann.isD)) {
+                ctx.font = "bold 15px Arial";
+            } else {
+                ctx.font = "13px Arial";
+            }
+            ctx.fillText(line, w * ann.xPct, (h * ann.yPct) + (index * 18));
+        });
+        
+        // Draw Retrograde (Rx) or Direct (D) indicators adjacent to the text
+        if (ann.isRx) {
+            ctx.font = "bold 20px Arial";
+            ctx.textAlign = "right";
+            ctx.fillText("℞", w * ann.xPct - 10, h * ann.yPct + 12);
+        }
+        if (ann.isD) {
+            ctx.font = "bold 20px Arial";
+            ctx.textAlign = "left";
+            ctx.fillText("D", w * ann.xPct + 10, h * ann.yPct + 12);
+        }
+    });
+
+    // --- DRAW SMALL ANNOTATION ARROWS ---
+    ctx.strokeStyle = data.themeColor;
+    ctx.lineWidth = 2;
+    // Top-left indicator arrow
+    ctx.beginPath();
+    ctx.moveTo(95, topY - 30);
+    ctx.lineTo(110, topY - 10);
+    ctx.stroke();
+    // Bottom-right indicator arrow
+    ctx.beginPath();
+    ctx.moveTo(w - 110, botY + 30);
+    ctx.lineTo(w - 120, botY + 10);
+    ctx.stroke();
+}
+
+// Run the script on load
+drawDiagram(diagramData);
+</script>
+
+</body>
+</html>
